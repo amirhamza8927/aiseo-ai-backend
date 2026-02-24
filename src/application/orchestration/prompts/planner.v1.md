@@ -5,6 +5,7 @@
 - language: {{language}}
 - target_word_count: {{target_word_count}}
 - themes: {{themes}}
+- serp_results (top 10): {{serp_results}}
 
 ## Task
 Create a strict Plan that will drive the outline and article.

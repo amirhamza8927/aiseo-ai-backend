@@ -4,6 +4,7 @@
 - topic: {{topic}}
 - language: {{language}}
 - plan: {{plan}}
+- themes (optional): {{themes}}
 
 ## Task
 Generate an Outline derived from the Plan.

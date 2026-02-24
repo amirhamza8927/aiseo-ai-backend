@@ -3,8 +3,10 @@
 ## Inputs
 - topic: {{topic}}
 - language: {{language}}
+- primary: {{primary}}
 - article_markdown: {{article_markdown}}
 - outline: {{outline}}
+- plan: {{plan}}
 - keyword_plan: {{keyword_plan}}
 
 ## Task
