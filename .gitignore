@@ -1,1 +1,7 @@
+# Cursor
 /.cursor
+.cursorrules
+
+# Environment
+.env
+/.venv

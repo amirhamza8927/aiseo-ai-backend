@@ -1,0 +1,15 @@
+# Core framework
+fastapi>=0.133.0
+uvicorn[standard]>=0.41.0
+
+# LLM orchestration
+langgraph>=1.0.9
+langchain-openai>=1.1.10
+langchain-core>=1.2.15
+
+# Data validation & settings
+pydantic>=2.12.5
+pydantic-settings>=2.13.1
+
+# Environment
+python-dotenv>=1.2.1
