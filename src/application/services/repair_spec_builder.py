@@ -11,17 +11,17 @@ _CHECK_MAP: dict[str, tuple[str, str, str]] = {
     # target_strategy: "__seo_meta__" | "__intro__" | "first_section" | "all_sections"
     "primary_in_title_tag": (
         "PRIMARY_MISSING_TITLE",
-        "Include primary keyword in title_tag exactly once.",
+        "Include '{primary_keyword}' in title_tag exactly once.",
         "__seo_meta__",
     ),
     "primary_in_intro": (
         "PRIMARY_MISSING_INTRO",
-        "Rewrite intro paragraph to include primary keyword naturally.",
+        "Rewrite intro paragraph to include '{primary_keyword}' naturally.",
         "__intro__",
     ),
     "primary_in_h2": (
         "PRIMARY_MISSING_H2",
-        "Include primary keyword in at least one H2 heading.",
+        "Include '{primary_keyword}' in at least one H2 heading.",
         "first_section",
     ),
     "heading_hierarchy_valid": (
@@ -36,7 +36,7 @@ _CHECK_MAP: dict[str, tuple[str, str, str]] = {
     ),
     "meta_description_length_valid": (
         "META_DESCRIPTION_LENGTH",
-        "Rewrite meta description to 140-160 chars with primary keyword.",
+        "Rewrite meta description to 140-160 chars with '{primary_keyword}'.",
         "__seo_meta__",
     ),
     "internal_links_count_valid": (
@@ -94,6 +94,9 @@ def build_repair_spec(
         code, action, strategy = mapping
         targets = _resolve_targets(strategy, outline)
         all_target_ids.update(targets)
+
+        if "{primary_keyword}" in action:
+            action = action.format(primary_keyword=primary_keyword)
 
         repair_issues.append(
             RepairIssue(

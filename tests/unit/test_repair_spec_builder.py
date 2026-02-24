@@ -38,6 +38,25 @@ def test_two_failed_checks():
     assert "META_DESCRIPTION_LENGTH" in codes
 
 
+def test_primary_keyword_interpolated_in_repair_instructions():
+    report = ValidationReport(
+        passed=False,
+        score=0.0,
+        issues=[],
+        checks={
+            "primary_in_title_tag": False,
+            "primary_in_intro": False,
+        },
+    )
+    spec = build_repair_spec(
+        report=report, outline=_outline(), primary_keyword="project management",
+    )
+    actions = [i.required_action for i in spec.issues]
+    assert any("project management" in a for a in actions)
+    assert "Include 'project management' in title_tag exactly once." in actions
+    assert "Rewrite intro paragraph to include 'project management' naturally." in actions
+
+
 def test_must_edit_section_ids_deduped():
     report = ValidationReport(
         passed=False,
