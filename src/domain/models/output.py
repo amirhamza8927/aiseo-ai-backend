@@ -6,14 +6,14 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 
-from src.domain.models.outline import Outline
-from src.domain.models.seo_package import (
+from .outline import Outline
+from .seo_package import (
     ExternalReference,
     InternalLinkSuggestion,
     KeywordUsage,
     SeoMeta,
 )
-from src.domain.models.validation import ValidationReport
+from .validation import ValidationReport
 
 
 class SeoArticleOutput(BaseModel):

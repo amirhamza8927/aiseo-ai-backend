@@ -6,7 +6,7 @@ from enum import Enum
 
 from pydantic import BaseModel
 
-from src.domain.models.output import SeoArticleOutput
+from .output import SeoArticleOutput
 
 
 class JobStatus(str, Enum):

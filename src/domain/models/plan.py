@@ -54,29 +54,33 @@ class Plan(BaseModel):
     @model_validator(mode="after")
     def _validate_plan_integrity(self) -> Plan:
         ids = [s.section_id for s in self.sections]
-        if len(ids) != len(set(ids)):
-            seen: set[str] = set()
-            dupes = [sid for sid in ids if sid in seen or seen.add(sid)]  # type: ignore[func-returns-value]
-            raise ValueError(f"Duplicate section_id(s): {dupes}")
+
+        duplicates: list[str] = []
+        seen: set[str] = set()
+        for sid in ids:
+            if sid in seen:
+                duplicates.append(sid)
+            else:
+                seen.add(sid)
+        if duplicates:
+            raise ValueError(
+                f"Duplicate section_id(s) in plan.sections: {sorted(set(duplicates))}"
+            )
 
         valid_ids = set(ids)
 
+        def _ensure_valid(ref_id: str, kind: str) -> None:
+            if ref_id not in valid_ids:
+                raise ValueError(
+                    f"{kind}.placement_section_id '{ref_id}' "
+                    f"not found in plan.sections"
+                )
+
         for link in self.internal_links:
-            if link.placement_section_id not in valid_ids:
-                raise ValueError(
-                    f"internal_links placement_section_id "
-                    f"'{link.placement_section_id}' not in plan sections"
-                )
+            _ensure_valid(link.placement_section_id, "internal_links")
         for cite in self.external_citations:
-            if cite.placement_section_id not in valid_ids:
-                raise ValueError(
-                    f"external_citations placement_section_id "
-                    f"'{cite.placement_section_id}' not in plan sections"
-                )
+            _ensure_valid(cite.placement_section_id, "external_citations")
         for faq in self.faqs:
-            if faq.placement_section_id not in valid_ids:
-                raise ValueError(
-                    f"faqs placement_section_id "
-                    f"'{faq.placement_section_id}' not in plan sections"
-                )
+            _ensure_valid(faq.placement_section_id, "faqs")
+
         return self
