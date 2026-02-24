@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from enum import Enum
 
+from src.domain.models.job import JobStatus
 from src.logging_config import configure_logging, get_logger
 from src.settings import Settings, get_settings
 
@@ -22,15 +23,6 @@ class NodeName(str, Enum):
     REPAIR_SPEC = "repair_spec"
     REVISE_TARGETED = "revise_targeted"
     FINALIZE = "finalize"
-
-
-class JobStatus(str, Enum):
-    """Lifecycle states for a pipeline job."""
-
-    PENDING = "pending"
-    RUNNING = "running"
-    COMPLETED = "completed"
-    FAILED = "failed"
 
 
 __all__ = [
