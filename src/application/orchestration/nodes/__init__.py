@@ -6,6 +6,7 @@ from .build_outline import build_outline
 from .collect_serp import collect_serp
 from .deps import NodeDeps
 from .extract_themes import extract_themes
+from .fail_job import fail_job
 from .finalize import finalize
 from .keyword_plan import keyword_plan
 from .planner import planner
@@ -22,6 +23,7 @@ __all__ = [
     "build_outline",
     "collect_serp",
     "extract_themes",
+    "fail_job",
     "finalize",
     "keyword_plan",
     "planner",
