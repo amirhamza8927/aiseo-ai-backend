@@ -18,6 +18,7 @@ class Settings(BaseSettings):
     DEFAULT_LANGUAGE: str = "en"
     MAX_REVISIONS: int = 2
     APP_ENV: str = "dev"
+    SERP_PROVIDER: str = "mock"
 
     @field_validator("DEFAULT_WORD_COUNT")
     @classmethod
