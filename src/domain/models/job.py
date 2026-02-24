@@ -6,6 +6,7 @@ from enum import Enum
 
 from pydantic import BaseModel
 
+from .job_input import JobInput
 from .output import SeoArticleOutput
 
 
@@ -23,6 +24,7 @@ class JobRecord(BaseModel):
 
     id: str
     status: JobStatus
+    input: JobInput | None = None
     current_node: str | None = None
     error: str | None = None
     result: SeoArticleOutput | None = None

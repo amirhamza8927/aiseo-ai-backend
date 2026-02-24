@@ -3,11 +3,10 @@
 from __future__ import annotations
 
 from .checkpointer import make_checkpointer, thread_config
-from .state import GraphState, JobInput
+from .state import GraphState
 
 __all__ = [
     "GraphState",
-    "JobInput",
     "make_checkpointer",
     "thread_config",
 ]

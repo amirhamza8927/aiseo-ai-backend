@@ -4,24 +4,15 @@ from __future__ import annotations
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from src.domain.models.job_input import JobInput
+from src.domain.models.outline import Outline
+from src.domain.models.plan import Plan
+from src.domain.models.repair import RepairSpec
+from src.domain.models.seo_package import SeoPackage
 from src.domain.models.serp import SerpResult
 from src.domain.models.themes import Themes
-from src.domain.models.plan import Plan
-from src.domain.models.outline import Outline
-from src.domain.models.keyword_plan import KeywordPlan
-from src.domain.models.seo_package import SeoPackage
 from src.domain.models.validation import ValidationReport
-from src.domain.models.repair import RepairSpec
-
-
-class JobInput(BaseModel):
-    """User-provided inputs that kick off a pipeline run."""
-
-    model_config = ConfigDict(extra="forbid")
-
-    topic: str = Field(min_length=1)
-    target_word_count: int = Field(gt=0)
-    language: str = Field(min_length=1)
+from src.domain.models.keyword_plan import KeywordPlan
 
 
 class GraphState(BaseModel):

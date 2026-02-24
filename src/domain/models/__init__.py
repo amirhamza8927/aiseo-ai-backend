@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from .job import JobRecord, JobStatus
+from .job_input import JobInput
 from .keyword_plan import KeywordPlan
 from .outline import Outline, OutlineSection
 from .output import SeoArticleOutput
@@ -56,6 +57,7 @@ __all__ = [
     # output
     "SeoArticleOutput",
     # job
-    "JobStatus",
+    "JobInput",
     "JobRecord",
+    "JobStatus",
 ]

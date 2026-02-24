@@ -11,6 +11,7 @@ from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.store.memory import InMemoryStore
 
 from src.domain.models.job import JobRecord, JobStatus
+from src.domain.models.job_input import JobInput
 from src.domain.models.output import SeoArticleOutput
 
 
@@ -23,6 +24,7 @@ class StoredJobState(BaseModel):
 
     job_id: str
     status: JobStatus
+    input: JobInput | None = None
     current_node: str | None = None
     error: str | None = None
     result: SeoArticleOutput | None = None
@@ -36,6 +38,7 @@ def _to_record(state: StoredJobState) -> JobRecord:
     return JobRecord(
         id=state.job_id,
         status=state.status,
+        input=state.input,
         current_node=state.current_node,
         error=state.error,
         result=state.result,
@@ -110,6 +113,13 @@ class InMemoryJobStore:
         """Retrieve current job record."""
         with self._lock:
             return _to_record(self._load(job_id))
+
+    def set_input(self, job_id: str, job_input: JobInput) -> JobRecord:
+        """Store job input (topic, target_word_count, language)."""
+        with self._lock:
+            state = self._update(self._load(job_id), input=job_input)
+            self._save(state)
+            return _to_record(state)
 
     def set_status(
         self,

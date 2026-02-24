@@ -6,6 +6,7 @@ import uuid
 
 from src.application.orchestration.state import GraphState
 from src.domain.models.job import JobRecord
+from src.domain.models.job_input import JobInput
 from src.infrastructure.stores.in_memory_job_store import InMemoryJobStore
 from src.settings import Settings
 
@@ -27,12 +28,18 @@ def create_job(
         raise ValueError("create_job: target_word_count must be > 0")
 
     job_id = str(uuid.uuid4())
-    record = job_store.create(job_id)
-    state = GraphState.new(
-        job_id=job_id,
+    job_input = JobInput(
         topic=topic.strip(),
         target_word_count=target_word_count,
         language=language.strip(),
+    )
+    record = job_store.create(job_id)
+    record = job_store.set_input(job_id, job_input)
+    state = GraphState.new(
+        job_id=job_id,
+        topic=job_input.topic,
+        target_word_count=job_input.target_word_count,
+        language=job_input.language,
         max_revisions=settings.MAX_REVISIONS,
     )
     return (record, state)

@@ -5,7 +5,8 @@ from __future__ import annotations
 import pytest
 from pydantic import ValidationError
 
-from src.application.orchestration.state import GraphState, JobInput
+from src.application.orchestration.state import GraphState
+from src.domain.models.job_input import JobInput
 
 _OPTIONAL_FIELDS = (
     "serp_results",
