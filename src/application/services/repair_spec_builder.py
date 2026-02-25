@@ -98,6 +98,15 @@ def build_repair_spec(
         if "{primary_keyword}" in action:
             action = action.format(primary_keyword=primary_keyword)
 
+        # For word count, inject the specific issue so the reviser knows the target range
+        if check_key == "word_count_within_tolerance":
+            word_count_issue = next(
+                (i for i in report.issues if i.startswith("Word count")),
+                None,
+            )
+            if word_count_issue:
+                action = f"{action} ({word_count_issue})"
+
         repair_issues.append(
             RepairIssue(
                 code=code,

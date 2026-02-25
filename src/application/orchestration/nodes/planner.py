@@ -33,6 +33,7 @@ def planner(state: GraphState, deps: NodeDeps) -> dict:
     prompt = render_prompt(
         template,
         topic=state.input.topic,
+        primary_keyword=state.input.topic,
         language=state.input.language,
         target_word_count=state.input.target_word_count,
         themes=themes_data,

@@ -48,7 +48,7 @@ def _valid_output(
                 OutlineSection(section_id="s2", h2="Conclusion"),
             ],
         ),
-        keyword_analysis=KeywordUsage(primary=keyword, secondary=[], counts={}),
+        keyword_analysis=KeywordUsage(primary=keyword, secondary=[], counts=[]),
         internal_links=[
             InternalLinkSuggestion(anchor_text=f"link{i}", target_topic="t")
             for i in range(internal_count)

@@ -22,7 +22,7 @@ Create SeoPackage for the article:
 - seo_meta.meta_description MUST be 140–160 characters and include keyword_plan.primary.
 - internal_links must be 3–5 items.
 - external_references must be 2–4 items.
-- keyword_usage.counts must include an entry for keyword_plan.primary at minimum.
+- keyword_usage.counts must include an entry for keyword_plan.primary at minimum (list of {keyword, count}).
 - Language: {{language}}.
 
 ## Output JSON shape (must match SeoPackage exactly)
@@ -49,8 +49,6 @@ Create SeoPackage for the article:
   "keyword_usage": {
     "primary": "string",
     "secondary": ["string"],
-    "counts": {
-      "keyword": 3
-    }
+    "counts": [{"keyword": "string", "count": 3}]
   }
 }

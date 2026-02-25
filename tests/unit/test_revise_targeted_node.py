@@ -8,11 +8,12 @@ from src.application.orchestration.nodes.deps import NodeDeps
 from src.application.orchestration.nodes.prompt_loader import PromptLoader
 from src.application.orchestration.nodes.revise_targeted import revise_targeted
 from src.application.orchestration.state import GraphState
-from src.domain.models.keyword_plan import KeywordPlan
+from src.domain.models.keyword_plan import KeywordPlan, UsageTargetItem
 from src.domain.models.outline import Outline, OutlineSection
 from src.domain.models.repair import RepairSpec
 from src.domain.models.revision import RevisionResult
 from src.domain.models.seo_package import (
+    KeywordCountItem,
     KeywordUsage,
     SeoMeta,
     SeoPackage,
@@ -34,7 +35,7 @@ def _make_keyword_plan() -> KeywordPlan:
     return KeywordPlan(
         primary="project management tools",
         secondary=["task tracking", "team collaboration"],
-        usage_targets={"project management tools": 2},
+        usage_targets=[UsageTargetItem(keyword="project management tools", count=2)],
     )
 
 
@@ -49,7 +50,7 @@ def _make_seo_package() -> SeoPackage:
         keyword_usage=KeywordUsage(
             primary="project management tools",
             secondary=["task tracking", "team collaboration"],
-            counts={"project management tools": 2},
+            counts=[KeywordCountItem(keyword="project management tools", count=2)],
         ),
     )
 
@@ -202,7 +203,7 @@ def test_revise_targeted_drops_required_h2_raises() -> None:
 
 def test_revise_targeted_seo_package_primary_mismatch_raises() -> None:
     pkg = _make_seo_package().model_copy(
-        update={"keyword_usage": KeywordUsage(primary="wrong primary", secondary=[], counts={})}
+        update={"keyword_usage": KeywordUsage(primary="wrong primary", secondary=[], counts=[])}
     )
     result = RevisionResult(article_markdown=ARTICLE_MD, seo_package=pkg, notes=[])
     state = _make_state()

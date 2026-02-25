@@ -7,7 +7,7 @@ import pytest
 from src.application.orchestration.nodes.deps import NodeDeps
 from src.application.orchestration.nodes.validate_and_score import validate_and_score
 from src.application.orchestration.state import GraphState
-from src.domain.models.keyword_plan import KeywordPlan
+from src.domain.models.keyword_plan import KeywordPlan, UsageTargetItem
 from src.domain.models.outline import Outline, OutlineSection
 from src.domain.models.seo_package import (
     ExternalReference,
@@ -48,7 +48,7 @@ def _make_keyword_plan() -> KeywordPlan:
     return KeywordPlan(
         primary=PRIMARY,
         secondary=["task tracking", "team collaboration"],
-        usage_targets={PRIMARY: 2},
+        usage_targets=[UsageTargetItem(keyword=PRIMARY, count=2)],
     )
 
 
@@ -80,7 +80,7 @@ def _make_seo_package() -> SeoPackage:
             )
             for i in range(2)
         ],
-        keyword_usage=KeywordUsage(primary=PRIMARY, secondary=[], counts={}),
+        keyword_usage=KeywordUsage(primary=PRIMARY, secondary=[], counts=[]),
     )
 
 

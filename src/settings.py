@@ -19,6 +19,10 @@ class Settings(BaseSettings):
     MAX_REVISIONS: int = 2
     APP_ENV: str = "dev"
     SERP_PROVIDER: str = "mock"
+    LANGCHAIN_TRACING_V2: bool = True
+    LANGCHAIN_ENDPOINT: str = "https://api.smith.langchain.com"
+    LANGCHAIN_API_KEY: str = ""
+    LANGCHAIN_PROJECT: str = "seo-agentic-backend"
 
     @field_validator("DEFAULT_WORD_COUNT")
     @classmethod

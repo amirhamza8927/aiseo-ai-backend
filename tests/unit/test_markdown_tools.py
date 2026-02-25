@@ -63,11 +63,19 @@ def test_h3_before_h2():
     assert any("H3" in i and "before" in i for i in issues)
 
 
-def test_h4_flagged():
-    md = "# Title\n\n## Section\n\n#### Deep\n"
+def test_h4_allowed():
+    """H4 is allowed (e.g. FAQ questions under H2)."""
+    md = "# Title\n\n## Section\n\n#### FAQ Question\n"
+    passed, issues = validate_heading_hierarchy(md)
+    assert passed is True
+    assert issues == []
+
+
+def test_h5_flagged():
+    md = "# Title\n\n## Section\n\n##### Too Deep\n"
     passed, issues = validate_heading_hierarchy(md)
     assert passed is False
-    assert any("H4" in i for i in issues)
+    assert any("H5" in i for i in issues)
 
 
 # -- strip_markdown_for_word_count -------------------------------------------

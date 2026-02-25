@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field, HttpUrl
+from pydantic import BaseModel, Field
 
 
 class SeoMeta(BaseModel):
@@ -24,9 +24,16 @@ class ExternalReference(BaseModel):
     """An external citation / reference."""
 
     source_name: str = Field(min_length=1)
-    url: HttpUrl | None = None
+    url: str | None = None
     placement_hint: str = Field(min_length=1)
     credibility_reason: str = Field(min_length=1)
+
+
+class KeywordCountItem(BaseModel):
+    """Per-keyword occurrence count (OpenAI structured output does not support dict[str,int])."""
+
+    keyword: str = Field(min_length=1)
+    count: int = Field(ge=0)
 
 
 class KeywordUsage(BaseModel):
@@ -34,7 +41,7 @@ class KeywordUsage(BaseModel):
 
     primary: str = Field(min_length=1)
     secondary: list[str] = Field(default_factory=list)
-    counts: dict[str, int] = Field(default_factory=dict)
+    counts: list[KeywordCountItem] = Field(default_factory=list)
 
 
 class SeoPackage(BaseModel):

@@ -91,7 +91,7 @@ def _seo_package(primary: str) -> SeoPackage:
             )
             for i in range(3)
         ],
-        keyword_usage=KeywordUsage(primary=primary, secondary=[], counts={}),
+        keyword_usage=KeywordUsage(primary=primary, secondary=[], counts=[]),
     )
 
 
@@ -139,7 +139,7 @@ class FakeLLMProvider:
         if schema == Outline:
             return schema.model_validate(self._outline.model_dump())
         if schema == KeywordPlan:
-            return schema.model_validate({"primary": self.primary, "secondary": ["comparison", "review"], "usage_targets": {}})
+            return schema.model_validate({"primary": self.primary, "secondary": ["comparison", "review"], "usage_targets": []})
         if schema == SeoPackage:
             return schema.model_validate(_seo_package(self.primary).model_dump(mode="json"))
         if schema == RevisionResult:

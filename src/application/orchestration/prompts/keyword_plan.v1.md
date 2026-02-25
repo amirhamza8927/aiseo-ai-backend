@@ -12,7 +12,7 @@ Create a KeywordPlan for the article.
 - Keep primary EXACTLY as provided (do not modify).
 - Select 8–15 secondary keywords from candidates and themes (natural SEO, not spam).
 - Keep phrases short, relevant, no duplicates or near-duplicates.
-- usage_targets: optional dict with primary + a few key secondary and low counts (light touch).
+- usage_targets: optional list of {keyword, count} for primary + a few key secondary (light touch).
 
 ## Output rules (strict)
 - Output ONLY valid JSON.
@@ -23,5 +23,5 @@ Create a KeywordPlan for the article.
 {
   "primary": "string (exactly as provided)",
   "secondary": ["string"],
-  "usage_targets": {"keyword": 2}
+  "usage_targets": [{"keyword": "string", "count": 2}]
 }

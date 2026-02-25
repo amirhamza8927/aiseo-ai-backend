@@ -8,7 +8,7 @@ from src.application.orchestration.nodes.keyword_plan import keyword_plan
 from src.application.orchestration.nodes.deps import NodeDeps
 from src.application.orchestration.nodes.prompt_loader import PromptLoader
 from src.application.orchestration.state import GraphState
-from src.domain.models.keyword_plan import KeywordPlan
+from src.domain.models.keyword_plan import KeywordPlan, UsageTargetItem
 from src.domain.models.themes import Themes
 from src.infrastructure.providers.serp.mock_serp import MockSerpProvider
 
@@ -27,7 +27,10 @@ class FakeLLM:
         return KeywordPlan(
             primary=self._primary,
             secondary=self._secondary,
-            usage_targets={self._primary: 2, "Task Tracking": 1},
+            usage_targets=[
+                UsageTargetItem(keyword=self._primary, count=2),
+                UsageTargetItem(keyword="Task Tracking", count=1),
+            ],
         )
 
 

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field, HttpUrl, model_validator
+from pydantic import BaseModel, Field, model_validator
 
 
 class PlanSection(BaseModel):
@@ -29,7 +29,7 @@ class ExternalCitationPlanItem(BaseModel):
 
     source_type: str = Field(min_length=1)
     suggested_source: str = Field(min_length=1)
-    url: HttpUrl | None = None
+    url: str | None = None
     claim_supported: str = Field(min_length=1)
     placement_section_id: str = Field(min_length=1)
 

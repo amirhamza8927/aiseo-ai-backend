@@ -8,12 +8,13 @@ from src.application.orchestration.nodes.deps import NodeDeps
 from src.application.orchestration.nodes.prompt_loader import PromptLoader
 from src.application.orchestration.nodes.seo_packager import seo_packager
 from src.application.orchestration.state import GraphState
-from src.domain.models.keyword_plan import KeywordPlan
+from src.domain.models.keyword_plan import KeywordPlan, UsageTargetItem
 from src.domain.models.outline import Outline, OutlineSection
 from src.domain.models.plan import Plan, PlanSection
 from src.domain.models.seo_package import (
     ExternalReference,
     InternalLinkSuggestion,
+    KeywordCountItem,
     KeywordUsage,
     SeoMeta,
     SeoPackage,
@@ -58,7 +59,7 @@ def _make_keyword_plan() -> KeywordPlan:
     return KeywordPlan(
         primary="project management tools",
         secondary=["task tracking", "team collaboration"],
-        usage_targets={"project management tools": 2},
+        usage_targets=[UsageTargetItem(keyword="project management tools", count=2)],
     )
 
 
@@ -86,7 +87,7 @@ def _make_valid_seo_package() -> SeoPackage:
         keyword_usage=KeywordUsage(
             primary="project management tools",
             secondary=["task tracking", "team collaboration"],
-            counts={"project management tools": 2},
+            counts=[KeywordCountItem(keyword="project management tools", count=2)],
         ),
     )
 
@@ -139,7 +140,7 @@ def test_seo_packager_returns_patch() -> None:
 
 def test_seo_packager_primary_mismatch_raises() -> None:
     pkg = _make_valid_seo_package().model_copy(
-        update={"keyword_usage": KeywordUsage(primary="wrong primary", secondary=[], counts={})}
+        update={"keyword_usage": KeywordUsage(primary="wrong primary", secondary=[], counts=[])}
     )
     state = _make_state()
     deps = NodeDeps(

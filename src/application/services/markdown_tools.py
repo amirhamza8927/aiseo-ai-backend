@@ -41,7 +41,8 @@ def validate_heading_hierarchy(markdown: str) -> tuple[bool, list[str]]:
     Rules:
     - Exactly one H1.
     - H3 may only appear after at least one H2.
-    - H4+ are flagged as issues (strict hierarchy for publishing).
+    - H4 allowed (e.g. FAQ questions under H2 or H3).
+    - H5+ are flagged as issues (keep hierarchy shallow for publishing).
     """
     headings = extract_headings(markdown)
     issues: list[str] = []
@@ -58,7 +59,7 @@ def validate_heading_hierarchy(markdown: str) -> tuple[bool, list[str]]:
             h2_seen = True
         elif level == 3 and not h2_seen:
             issues.append(f"H3 '{text}' appears before any H2")
-        elif level >= 4:
-            issues.append(f"H{level} '{text}' found; prefer H1-H3 only")
+        elif level >= 5:
+            issues.append(f"H{level} '{text}' found; prefer H1-H4 only")
 
     return (len(issues) == 0, issues)

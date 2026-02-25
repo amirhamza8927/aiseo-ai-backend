@@ -149,7 +149,7 @@ Typed state (Pydantic) flowing through nodes. Each node returns a **patch dict**
 | `primary_in_title_tag` | Primary keyword in title |
 | `primary_in_intro` | Primary in first paragraph (H1 → first H2) |
 | `primary_in_h2` | Primary in at least one H2 |
-| `heading_hierarchy_valid` | Exactly 1 H1, H3 only under H2, no H4+ |
+| `heading_hierarchy_valid` | Exactly 1 H1, H3 only under H2, H4 allowed (e.g. FAQs), no H5+ |
 | `word_count_within_tolerance` | Target ± 15% (configurable) |
 | `meta_description_length_valid` | 140–160 chars |
 | `internal_links_count_valid` | 3–5 links |

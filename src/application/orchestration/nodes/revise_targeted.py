@@ -15,6 +15,22 @@ def _norm(s: str) -> str:
     return " ".join(s.lower().split())
 
 
+def _word_count_budget(target: int, outline) -> str:
+    """Compute per-section word count caps for reviser prompt."""
+    tolerance = 0.15
+    wc_min = int(target * (1 - tolerance))
+    wc_max = int(target * (1 + tolerance))
+    parts = [f"total target range: {wc_min}–{wc_max}"]
+    if outline and outline.sections:
+        n_sections = len(outline.sections)
+        intro_cap = max(50, int(wc_max * 0.2))
+        section_cap = max(50, int((wc_max - intro_cap) / n_sections))
+        parts.append(f"intro <= {intro_cap}")
+        for sec in outline.sections:
+            parts.append(f"{sec.section_id} <= {section_cap}")
+    return ". ".join(parts)
+
+
 def revise_targeted(state: GraphState, deps: NodeDeps) -> dict:
     """Revise article per RepairSpec. Returns patch with article_markdown, optional seo_package."""
     if deps.llm is None:
@@ -33,10 +49,15 @@ def revise_targeted(state: GraphState, deps: NodeDeps) -> dict:
         raise ValueError("revise_targeted: revisions_left must be > 0")
 
     template = deps.prompts.get("reviser")
+    word_count_budget = _word_count_budget(
+        state.input.target_word_count, state.outline
+    )
     prompt = render_prompt(
         template,
         topic=state.input.topic,
         language=state.input.language,
+        target_word_count=state.input.target_word_count,
+        word_count_budget=word_count_budget,
         keyword_plan=state.keyword_plan.model_dump(mode="json") if state.keyword_plan else {},
         outline=state.outline.model_dump(mode="json") if state.outline else {},
         current_seo_package=state.seo_package.model_dump(mode="json"),

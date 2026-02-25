@@ -8,7 +8,7 @@ from src.application.orchestration.nodes.deps import NodeDeps
 from src.application.orchestration.nodes.prompt_loader import PromptLoader
 from src.application.orchestration.nodes.write_article import write_article
 from src.application.orchestration.state import GraphState
-from src.domain.models.keyword_plan import KeywordPlan
+from src.domain.models.keyword_plan import KeywordPlan, UsageTargetItem
 from src.domain.models.outline import Outline, OutlineSection
 from src.domain.models.plan import Plan, PlanSection
 from src.infrastructure.providers.serp.mock_serp import MockSerpProvider
@@ -51,7 +51,7 @@ def _make_keyword_plan() -> KeywordPlan:
     return KeywordPlan(
         primary="project management tools",
         secondary=["task tracking", "team collaboration"],
-        usage_targets={"project management tools": 2},
+        usage_targets=[UsageTargetItem(keyword="project management tools", count=2)],
     )
 
 

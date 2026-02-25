@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from .job import JobRecord, JobStatus
 from .job_input import JobInput
-from .keyword_plan import KeywordPlan
+from .keyword_plan import KeywordPlan, UsageTargetItem
 from .outline import Outline, OutlineSection
 from .output import SeoArticleOutput
 from .plan import (
@@ -18,6 +18,7 @@ from .repair import RepairIssue, RepairSpec
 from .seo_package import (
     ExternalReference,
     InternalLinkSuggestion,
+    KeywordCountItem,
     KeywordUsage,
     SeoMeta,
     SeoPackage,
@@ -43,10 +44,12 @@ __all__ = [
     "Outline",
     # keyword
     "KeywordPlan",
+    "UsageTargetItem",
     # seo package
     "SeoMeta",
     "InternalLinkSuggestion",
     "ExternalReference",
+    "KeywordCountItem",
     "KeywordUsage",
     "SeoPackage",
     # validation

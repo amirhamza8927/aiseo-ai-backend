@@ -88,6 +88,22 @@ def test_required_action_non_empty():
         assert len(issue.required_action) > 0
 
 
+def test_word_count_issue_includes_specific_range():
+    """When word count fails, required_action includes the exact tolerance from issues."""
+    report = ValidationReport(
+        passed=False,
+        score=0.0,
+        issues=["Word count 1543 outside tolerance [425, 575]"],
+        checks={"word_count_within_tolerance": False},
+    )
+    spec = build_repair_spec(
+        report=report, outline=_outline(), primary_keyword="kw",
+    )
+    word_issue = next(i for i in spec.issues if i.code == "WORD_COUNT")
+    assert "1543" in word_issue.required_action
+    assert "[425, 575]" in word_issue.required_action
+
+
 def test_primary_in_intro_fail_includes_intro_target():
     """When primary_in_intro fails, must_edit_section_ids includes __intro__."""
     report = ValidationReport(

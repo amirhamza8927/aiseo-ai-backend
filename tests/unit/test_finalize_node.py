@@ -52,7 +52,7 @@ def _make_seo_package() -> SeoPackage:
             )
             for i in range(2)
         ],
-        keyword_usage=KeywordUsage(primary=PRIMARY, secondary=[], counts={}),
+        keyword_usage=KeywordUsage(primary=PRIMARY, secondary=[], counts=[]),
     )
 
 

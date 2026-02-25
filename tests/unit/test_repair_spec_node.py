@@ -40,7 +40,7 @@ def _make_keyword_plan() -> KeywordPlan:
     return KeywordPlan(
         primary="project management tools",
         secondary=["task tracking"],
-        usage_targets={},
+        usage_targets=[],
     )
 
 
