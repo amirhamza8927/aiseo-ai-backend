@@ -4,6 +4,7 @@ uvicorn[standard]>=0.41.0
 
 # LLM orchestration
 langgraph>=1.0.9
+langchain>=1.2.10
 langchain-openai>=1.1.10
 langchain-core>=1.2.15
 

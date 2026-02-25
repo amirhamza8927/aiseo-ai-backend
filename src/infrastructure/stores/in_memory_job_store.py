@@ -8,6 +8,7 @@ from datetime import datetime, timezone
 from pydantic import BaseModel
 
 from langgraph.checkpoint.memory import InMemorySaver
+from langgraph.checkpoint.serde.jsonplus import JsonPlusSerializer
 from langgraph.store.memory import InMemoryStore
 
 from src.domain.models.job import JobRecord, JobStatus
@@ -61,7 +62,8 @@ class InMemoryJobStore:
         saver: InMemorySaver | None = None,
     ) -> None:
         self._store = store or InMemoryStore()
-        self._saver = saver or InMemorySaver()
+        serde = JsonPlusSerializer(pickle_fallback=True)
+        self._saver = saver or InMemorySaver(serde=serde)
         self._lock = threading.Lock()
 
     @property

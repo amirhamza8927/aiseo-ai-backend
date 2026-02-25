@@ -35,6 +35,12 @@ def test_count_multi_word_with_punctuation():
     assert count_keyword_occurrences(text, "remote teams") == 2
 
 
+def test_count_keyword_at_punctuation_boundary():
+    """Keyword at punctuation boundaries (e.g. 'word.') is counted."""
+    text = "The best word. Another word, and word."
+    assert count_keyword_occurrences(text, "word") == 3
+
+
 # -- extract_intro_paragraph -------------------------------------------------
 
 def test_intro_with_h2():

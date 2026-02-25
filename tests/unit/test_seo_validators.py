@@ -16,12 +16,14 @@ from src.domain.models.validation import ValidationReport
 
 
 def _valid_markdown(keyword: str = "seo tools") -> str:
-    """Markdown that passes all heading and keyword checks."""
+    """Markdown that passes all heading and keyword checks.
+    Word count ~500 for target 500 with 15% tolerance (425-575).
+    """
     return (
         f"# Best {keyword.title()} Guide\n\n"
         f"This intro covers {keyword} in depth.\n\n"
         f"## Why {keyword.title()} Matter\n\n"
-        + ("Lorem ipsum dolor sit amet. " * 80)
+        + ("Lorem ipsum dolor sit amet. " * 85)
         + "\n\n## Conclusion\n\nFinal thoughts.\n"
     )
 
@@ -64,7 +66,7 @@ def _valid_output(
     )
 
 
-CFG = SeoValidationConfig(word_count_target=500, word_count_tolerance_ratio=0.9)
+CFG = SeoValidationConfig(word_count_target=500, word_count_tolerance_ratio=0.15)
 
 
 def test_all_checks_pass():
@@ -117,3 +119,45 @@ def test_score_calculation():
     failed = sum(1 for v in report.checks.values() if not v)
     expected_score = (total - failed) / total
     assert abs(report.score - expected_score) < 1e-9
+
+
+def test_word_count_within_tolerance():
+    """Word count within target +/- 15% passes."""
+    output = _valid_output()
+    report = validate_seo_article(
+        output=output, primary_keyword="seo tools", config=CFG,
+    )
+    assert report.checks["word_count_within_tolerance"] is True
+
+
+def test_word_count_outside_tolerance():
+    """Word count outside [425, 575] for target 500 fails."""
+    short_md = "# Title\n\nShort intro.\n\n## Section\n\n" + ("x " * 50)
+    output = _valid_output()
+    output = output.model_copy(update={"article_markdown": short_md})
+    report = validate_seo_article(
+        output=output, primary_keyword="seo tools", config=CFG,
+    )
+    assert report.checks["word_count_within_tolerance"] is False
+    assert any("Word count" in i for i in report.issues)
+
+
+def test_meta_description_140_to_160_bounds():
+    """Meta description 140-160 chars passes; 139 or 161 fails."""
+    output_139 = _valid_output(meta_desc_len=139)
+    report_139 = validate_seo_article(
+        output=output_139, primary_keyword="seo tools", config=CFG,
+    )
+    assert report_139.checks["meta_description_length_valid"] is False
+
+    output_150 = _valid_output(meta_desc_len=150)
+    report_150 = validate_seo_article(
+        output=output_150, primary_keyword="seo tools", config=CFG,
+    )
+    assert report_150.checks["meta_description_length_valid"] is True
+
+    output_161 = _valid_output(meta_desc_len=161)
+    report_161 = validate_seo_article(
+        output=output_161, primary_keyword="seo tools", config=CFG,
+    )
+    assert report_161.checks["meta_description_length_valid"] is False

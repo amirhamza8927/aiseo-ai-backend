@@ -88,6 +88,25 @@ def test_required_action_non_empty():
         assert len(issue.required_action) > 0
 
 
+def test_primary_in_intro_fail_includes_intro_target():
+    """When primary_in_intro fails, must_edit_section_ids includes __intro__."""
+    report = ValidationReport(
+        passed=False,
+        score=0.0,
+        issues=["Primary keyword missing from intro"],
+        checks={
+            "primary_in_intro": False,
+            "primary_in_title_tag": True,
+        },
+    )
+    spec = build_repair_spec(
+        report=report, outline=_outline(), primary_keyword="kw",
+    )
+    assert "__intro__" in spec.must_edit_section_ids
+    codes = {i.code for i in spec.issues}
+    assert "PRIMARY_MISSING_INTRO" in codes
+
+
 def test_all_passed_returns_empty_spec():
     report = ValidationReport(
         passed=True,

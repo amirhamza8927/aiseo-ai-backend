@@ -1,14 +1,6 @@
 # Cursor
-/.cursor
 .cursorrules
-
-# Environment
-.env
-.env.*
-!.env.example
-.venv/
-venv/
-env/
+/.cursor
 
 # Python
 __pycache__/
@@ -16,10 +8,18 @@ __pycache__/
 *$py.class
 *.so
 .Python
-*.egg-info/
-*.egg
+*.pyc
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Build / dist
 dist/
 build/
+*.egg-info/
+*.egg
 *.manifest
 
 # Testing / coverage
@@ -28,6 +28,15 @@ build/
 htmlcov/
 .tox/
 .nox/
+
+# Linters / type checkers
+.ruff_cache/
+.mypy_cache/
+
+# Environment (keep .env.example)
+.env
+.env.*
+!.env.example
 
 # IDE / editors
 .idea/
