@@ -190,6 +190,8 @@ tests/
 
 - Python 3.11+
 - OpenAI API key (for LLM calls; optional in dev with `SERP_PROVIDER=mock`)
+- LangSmith API key (optional; for observability and tracing)
+- Streamlit (included in project deps; for the Streamlit UI)
 
 ---
 
@@ -245,6 +247,15 @@ Or use `scripts/example_request.sh` for a full flow (make executable with `chmod
 | `MAX_REVISIONS` | 2 | Max validation repair attempts |
 | `SERP_PROVIDER` | mock | `mock` (offline) or `live` |
 | `LOG_LEVEL` | INFO | Logging level |
+| `LANGCHAIN_TRACING_V2` | true | Enable LangSmith tracing |
+| `LANGCHAIN_API_KEY` | — | LangSmith API key (optional) |
+| `LANGCHAIN_PROJECT` | seo-agentic-backend | LangSmith project name |
+
+---
+
+## Observability (LangSmith)
+
+Tracing is enabled via LangSmith for LLM calls, graph runs, and chain steps. Set `LANGCHAIN_API_KEY` in `.env` to send traces to [LangSmith](https://smith.langchain.com). With `LANGCHAIN_TRACING_V2=true` (default), runs appear in the configured project for debugging and latency analysis.
 
 ---
 
@@ -265,7 +276,7 @@ pytest
 ## Design Decisions
 
 - **Sync execution**: No background workers; graph runs in-process. Suitable for assessment and low concurrency.
-- **In-memory stores**: JobStore and checkpointer use LangGraph InMemorySaver. No DB required.
+- **In-memory stores**: JobStore and checkpointer use LangGraph `InMemoryStore` and `InMemorySaver`. No DB required. Resume is durable within the running process only (see [Durability Notes](#durability-notes-assessment-vs-production)).
 - **Thin API**: Routers call use cases only; `api/deps.py` wires infrastructure.
 - **FakeLLM for tests**: Integration and e2e tests use `FakeLLMProvider` + `MockSerpProvider`; no network calls.
 - **Repair targets**: `__intro__`, `__seo_meta__`, or section IDs; reviser produces fixed markdown per RepairSpec.
